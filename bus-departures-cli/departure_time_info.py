@@ -30,8 +30,6 @@ class DepartureTimeInfo:
 
         # If the text is not a representation of minutes, return None
         if departure_text[-4:] != "Mins":
-            print("No Mins!")
-            print(departure_text[-4:])
             return None
 
         # Remove the mins value from the string
@@ -45,7 +43,7 @@ class DepartureTimeInfo:
             return None
 
     def __repr__(self) -> str:
-        return f"DepartureTimeInfo({self.departure_mins_int},{self.departure_text})"
+        return f'DepartureTimeInfo({self.departure_mins_int},"{self.departure_text}")'
 
     def __str__(self) -> str:
-        return f"Live Mins: {self.departure_mins_int}\tText: {self.departure_text}"
+        return f'Live Mins: {self.departure_mins_int}\tText: "{self.departure_text}"'

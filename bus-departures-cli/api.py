@@ -68,3 +68,5 @@ if __name__ == "__main__":
     html = get_departure_html(BUSWAY_SHIRE_HALL_N)
     lines = get_departure_time_strs(html)
     print(get_departures_dict(lines))
+
+    print(get_departures_dict(["Due", "10 Mins", "18:00"]))
