@@ -20,7 +20,7 @@ def main():
 
         # Print each departure to the dislpay
         for departure in departures:
-            print(departure)
+            print(f"{departure.service:4}{departure.destination:15}{departure.time}")
 
         time.sleep(1)
 

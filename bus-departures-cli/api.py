@@ -33,17 +33,6 @@ def get_departure_html(stop_id: str):
 
 
 def get_departure_objs(departures_html):
-    """!
-    Extract the strings containing the departure time strs from the departures popup HTML.
-
-    The data contained is not interpreted, it is just a string (e.g. 10 Mins, 10:12, Due).
-
-    @params departures_html The HTML received for the departures pop-up.
-
-    @returns    A list of departure time strs.
-                If there are no departures an empty list is returned.
-    """
-
     # Split the HTML into lines
     html_lines = departures_html.split("\\r\\n")
 
@@ -61,7 +50,7 @@ def get_departure_objs(departures_html):
     ]
 
 
-def get_departures(stop_id: str):
+def get_departures(stop_id: str) -> list[DepartureTimeInfo]:
     departures_html = get_departure_html(stop_id)
     return get_departure_objs(departures_html)
 

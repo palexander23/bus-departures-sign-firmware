@@ -21,10 +21,10 @@ class DepartureTimeInfo:
         self.destination_str = _destination_str
         """A string encoding the destination of the departure (e.g. 'St Ives')"""
 
-        self.mins_int = self._get_mins_integer(self.time_str)
+        self.time_mins_int = self._get_time_mins_integer(self.time_str)
         """Int encoding the minutes to departure. None if not live departure info."""
 
-    def _get_mins_integer(self, departure_text) -> int:
+    def _get_time_mins_integer(self, departure_text) -> int:
         """!
         Attempt to derive the integer value for the minutes until the departure.
         If the text is not in the format e.g. "10 Mins" the function will return None.
@@ -48,11 +48,20 @@ class DepartureTimeInfo:
         except Exception as e:
             return None
 
-    def departure_str(self) -> str:
-        if self.mins_int == None:
-            return "   " + self.departure_text
+    @property
+    def time(self):
+        if self.time_mins_int == None:
+            return "   " + self.time_str
         else:
-            return f"{self.mins_int:3d} Mins"
+            return f"{self.time_mins_int:3d} Mins"
+
+    @property
+    def service(self):
+        return self.service_str
+
+    @property
+    def destination(self):
+        return self.destination_str
 
     def __repr__(self) -> str:
-        return f'DepartureTimeInfo({self.mins_int},"{self.time_str}","{self.service_str}","{self.destination_str}")'
+        return f'DepartureTimeInfo({self.time_mins_int},"{self.time_str}","{self.service_str}","{self.destination_str}")'
