@@ -46,4 +46,7 @@ class DepartureTimeInfo:
         return f'DepartureTimeInfo({self.departure_mins_int},"{self.departure_text}")'
 
     def __str__(self) -> str:
-        return self.departure_text
+        if self.departure_mins_int == None:
+            return "   " + self.departure_text
+        else:
+            return f"{self.departure_mins_int:3d} Mins"

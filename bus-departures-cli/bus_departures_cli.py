@@ -20,7 +20,7 @@ def main():
 
         # Print each departure to the dislpay
         for departure in departures:
-            print(departure.departure_text)
+            print(departure)
 
         time.sleep(1)
 
