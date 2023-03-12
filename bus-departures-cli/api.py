@@ -9,8 +9,9 @@ URL_TEMPLATE = "http://www.cambridgeshirebus.info/Popup_Content/WebDisplay/WebDi
 BUSWAY_SHIRE_HALL_N = "0500CCITY497"
 
 # Regexes
-# Departure Time Regex
-DEPARTURE_TIME_REGEX = 'meItem".+>([\S ]+)<'
+DEP_TIME_REGEX = 'meItem"[^<]+>([\S ]+)<'
+DEP_SERVICE_REGEX = 'ceItem"[^<]+>([^<]+)<'
+DEP_DESTINATION_REGEX = 'ionItem" [^>]+><[^>]+>([^<]+)<'
 
 
 def get_departure_html(stop_id: str):
@@ -31,7 +32,7 @@ def get_departure_html(stop_id: str):
         raise ValueError(f"URL Returned an invalid response: {r}")
 
 
-def get_departure_time_strs(departures_html):
+def get_departure_objs(departures_html):
     """!
     Extract the strings containing the departure time strs from the departures popup HTML.
 
@@ -42,38 +43,31 @@ def get_departure_time_strs(departures_html):
     @returns    A list of departure time strs.
                 If there are no departures an empty list is returned.
     """
+
     # Split the HTML into lines
     html_lines = departures_html.split("\\r\\n")
 
     # Get the lines containing departure times
-    departure_lines = [line for line in html_lines if "gridDestinationItem" in line]
+    lines = [line for line in html_lines if "gridDestinationItem" in line]
 
-    # Strip away the HTML, leaving just a string detailing the departure
-    return [re.search(DEPARTURE_TIME_REGEX, line).group(1) for line in departure_lines]
+    # Extract the departure times, service names, and destinations for each departure in the html
+    times = [re.search(DEP_TIME_REGEX, line).group(1) for line in lines]
+    services = [re.search(DEP_SERVICE_REGEX, line).group(1) for line in lines]
+    destinations = [re.search(DEP_DESTINATION_REGEX, line).group(1) for line in lines]
 
-
-def get_departures_list(departure_lines):
-    """!
-    Convert the strings extracted from HTML to useful representations of data.
-
-    @param departure_lines A list of strs representing departures (e.g. "10 Mins"j, "Due")
-
-    @returns A list of DepartureTimeInfo objects generated from departure_lines
-    """
-
-    return [DepartureTimeInfo(line) for line in departure_lines]
+    return [
+        DepartureTimeInfo(time, service, destination)
+        for time, service, destination in zip(times, services, destinations)
+    ]
 
 
 def get_departures(stop_id: str):
     departures_html = get_departure_html(stop_id)
-    departures_strs = get_departure_time_strs(departures_html)
-
-    return get_departures_list(departures_strs)
+    return get_departure_objs(departures_html)
 
 
 if __name__ == "__main__":
-    html = get_departure_html(BUSWAY_SHIRE_HALL_N)
-    lines = get_departure_time_strs(html)
-    print(get_departures_list(lines))
+    import pprint as pp
 
-    print(get_departures_list(["Due", "10 Mins", "18:00"]))
+    html = get_departure_html(BUSWAY_SHIRE_HALL_N)
+    pp.pprint(get_departure_objs(html))

@@ -11,11 +11,17 @@ class DepartureTimeInfo:
     It will leave them as None if it fails.
     """
 
-    def __init__(self, _departure_text):
-        self.departure_text = _departure_text
+    def __init__(self, _time_str, _service_str, _destination_str):
+        self.time_str = _time_str
         """Text taken from the HTML representing the departure info."""
 
-        self.departure_mins_int = self._get_mins_integer(self.departure_text)
+        self.service_str = _service_str
+        """A string encoding the bus service of the departure (e.g. 'A')"""
+
+        self.destination_str = _destination_str
+        """A string encoding the destination of the departure (e.g. 'St Ives')"""
+
+        self.mins_int = self._get_mins_integer(self.time_str)
         """Int encoding the minutes to departure. None if not live departure info."""
 
     def _get_mins_integer(self, departure_text) -> int:
@@ -42,11 +48,11 @@ class DepartureTimeInfo:
         except Exception as e:
             return None
 
-    def __repr__(self) -> str:
-        return f'DepartureTimeInfo({self.departure_mins_int},"{self.departure_text}")'
-
-    def __str__(self) -> str:
-        if self.departure_mins_int == None:
+    def departure_str(self) -> str:
+        if self.mins_int == None:
             return "   " + self.departure_text
         else:
-            return f"{self.departure_mins_int:3d} Mins"
+            return f"{self.mins_int:3d} Mins"
+
+    def __repr__(self) -> str:
+        return f'DepartureTimeInfo({self.mins_int},"{self.time_str}","{self.service_str}","{self.destination_str}")'
