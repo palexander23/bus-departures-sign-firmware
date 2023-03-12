@@ -52,7 +52,7 @@ def get_departure_time_strs(departures_html):
     return [re.search(DEPARTURE_TIME_REGEX, line).group(1) for line in departure_lines]
 
 
-def get_departures_dict(departure_lines):
+def get_departures_list(departure_lines):
     """!
     Convert the strings extracted from HTML to useful representations of data.
 
@@ -64,9 +64,16 @@ def get_departures_dict(departure_lines):
     return [DepartureTimeInfo(line) for line in departure_lines]
 
 
+def get_departures(stop_id: str):
+    departures_html = get_departure_html(stop_id)
+    departures_strs = get_departure_time_strs(departures_html)
+
+    return get_departures_list(departures_strs)
+
+
 if __name__ == "__main__":
     html = get_departure_html(BUSWAY_SHIRE_HALL_N)
     lines = get_departure_time_strs(html)
-    print(get_departures_dict(lines))
+    print(get_departures_list(lines))
 
-    print(get_departures_dict(["Due", "10 Mins", "18:00"]))
+    print(get_departures_list(["Due", "10 Mins", "18:00"]))

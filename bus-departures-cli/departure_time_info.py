@@ -46,4 +46,4 @@ class DepartureTimeInfo:
         return f'DepartureTimeInfo({self.departure_mins_int},"{self.departure_text}")'
 
     def __str__(self) -> str:
-        return f'Live Mins: {self.departure_mins_int}\tText: "{self.departure_text}"'
+        return self.departure_text
