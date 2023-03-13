@@ -1,6 +1,7 @@
 import time
 
-from api import get_departures, BUSWAY_SHIRE_HALL_N
+# from api import get_departures, BUSWAY_SHIRE_HALL_N
+from departure_time_info import DepartureTimeInfo
 
 # Terminal Control Codes
 LINE_UP = "\033[1A"
@@ -8,14 +9,10 @@ LINE_CLEAR = "\x1b[2K"
 
 
 def main():
-    print("==================")
-    print("Bus Departures CLI")
-    print("==================")
-    print("")
-
     while 1:
         # Get the departures info
-        departures = get_departures(BUSWAY_SHIRE_HALL_N)
+        # departures = get_departures(BUSWAY_SHIRE_HALL_N)
+        departures = [DepartureTimeInfo("10 Mins", "A", "St Ives")]
         num_departures = len(departures)
 
         # Print each departure to the dislpay
