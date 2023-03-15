@@ -1,5 +1,12 @@
-import requests
-import re
+try:
+    import urequests as requests
+except:
+    import requests
+
+try:
+    import ure as re
+except:
+    import re
 
 from departure_time_info import DepartureTimeInfo
 
@@ -9,7 +16,7 @@ URL_TEMPLATE = "http://www.cambridgeshirebus.info/Popup_Content/WebDisplay/WebDi
 BUSWAY_SHIRE_HALL_N = "0500CCITY497"
 
 # Regexes
-DEP_TIME_REGEX = 'meItem"[^<]+>([\S ]+)<'
+DEP_TIME_REGEX = 'meItem"[^<]+>([^<]+)<'
 DEP_SERVICE_REGEX = 'ceItem"[^<]+>([^<]+)<'
 DEP_DESTINATION_REGEX = 'ionItem" [^>]+><[^>]+>([^<]+)<'
 
