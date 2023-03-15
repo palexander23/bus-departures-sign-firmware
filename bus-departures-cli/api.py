@@ -16,9 +16,9 @@ URL_TEMPLATE = "http://www.cambridgeshirebus.info/Popup_Content/WebDisplay/WebDi
 BUSWAY_SHIRE_HALL_N = "0500CCITY497"
 
 # Regexes
-DEP_TIME_REGEX = 'meItem"[^<]+>([^<]+)<'
-DEP_SERVICE_REGEX = 'ceItem"[^<]+>([^<]+)<'
-DEP_DESTINATION_REGEX = 'ionItem" [^>]+><[^>]+>([^<]+)<'
+DEP_TIME_REGEX = re.compile('meItem"[^<]+>([^<]+)<')
+DEP_SERVICE_REGEX = re.compile('ceItem"[^<]+>([^<]+)<')
+DEP_DESTINATION_REGEX = re.compile('ionItem" [^>]+><[^>]+>([^<]+)<')
 
 
 def get_departure_html(stop_id: str):
@@ -47,9 +47,9 @@ def get_departure_objs(departures_html):
     lines = [line for line in html_lines if "gridDestinationItem" in line]
 
     # Extract the departure times, service names, and destinations for each departure in the html
-    times = [re.search(DEP_TIME_REGEX, line).group(1) for line in lines]
-    services = [re.search(DEP_SERVICE_REGEX, line).group(1) for line in lines]
-    destinations = [re.search(DEP_DESTINATION_REGEX, line).group(1) for line in lines]
+    times = [DEP_TIME_REGEX.search(line).group(1) for line in lines]
+    services = [DEP_SERVICE_REGEX.search(line).group(1) for line in lines]
+    destinations = [DEP_DESTINATION_REGEX.search(line).group(1) for line in lines]
 
     return [
         DepartureTimeInfo(time, service, destination)
