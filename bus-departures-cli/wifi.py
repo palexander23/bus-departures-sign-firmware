@@ -7,7 +7,14 @@ except:
 
 from time import sleep
 
-from wifi_credentials import SSID, PSK
+try:
+    from wifi_credentials import SSID, PSK
+except Exception as e:
+    if EMBEDDED_HOST == False:
+        pass
+    else:
+        raise e
+
 
 CONNECTION_TIMEOUT_LIMIT = 30
 
