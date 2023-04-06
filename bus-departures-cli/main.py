@@ -18,6 +18,8 @@ def init():
 def main():
     init()
 
+    prev_num_departures = 0
+
     while 1:
         # Get the departures info
         departures = get_departures(STOP_ID)
@@ -25,13 +27,20 @@ def main():
 
         # Print each departure to the dislpay
         for departure in departures:
-            print(f"{departure.service:4}{departure.destination:20}{departure.time}")
+            print(
+                f"{departure.service:4}{departure.destination:20}{departure.time:>10}"
+            )
+
+        # Clear the rest of the screen that was not overwritten with this print
+        if prev_num_departures > num_departures:
+            for n in range(prev_num_departures - num_departures):
+                print(LINE_UP, end=LINE_CLEAR)
 
         time.sleep(1)
 
         # Bring the cursor back to the top of the departures list
         for n in range(num_departures):
-            print(LINE_UP, end=LINE_CLEAR)
+            print(LINE_UP, end="")
 
 
 if __name__ == "__main__":
