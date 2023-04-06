@@ -1,4 +1,4 @@
-PORT = /dev/ttyUSB0
+PORT = /dev/ttyACM0
 AMPY = ampy
 AMPY_ARGS = -p $(PORT)
 

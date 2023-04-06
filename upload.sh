@@ -1,4 +1,4 @@
-port=/dev/ttyUSB0
+port=/dev/ttyACM0
 
 cd bus-departures-cli
 
