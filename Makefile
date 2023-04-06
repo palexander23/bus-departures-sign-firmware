@@ -11,7 +11,7 @@ AMPY_ARGS = -p $(PORT)
 # This means files are only reuploaded when the token is older than the src.
 
 SRC_DIR = ./bus-departures-cli/
-UPLOAD_TOKEN_DIR = ./bus-departures-cli/__mpycache__/
+UPLOAD_TOKEN_DIR = ${SRC_DIR}__mpycache__/
 
 SRC_FILES = $(wildcard $(SRC_DIR)*.py)
 SRC_UPLOAD_TOKENS = $(patsubst $(SRC_DIR)%.py, $(UPLOAD_TOKEN_DIR)%.py_uploaded, $(SRC_FILES))
@@ -46,8 +46,7 @@ clean:
 	-make clear-tokens
 
 clear-tokens:
-	-cd $(UPLOAD_TOKEN_DIR)
-	-del /S /Q *.py_uploaded
+	-rm ${UPLOAD_TOKEN_DIR}*.py_uploaded 
 
 
 reset:
