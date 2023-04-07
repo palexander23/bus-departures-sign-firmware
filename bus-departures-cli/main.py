@@ -40,7 +40,7 @@ def main():
 
         display_update(departures_list)
 
-        time.sleep(1)
+        time.sleep(10)
 
         # Bring the cursor back to the top of the departures list
         for n in range(num_departures):

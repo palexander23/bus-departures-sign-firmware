@@ -281,3 +281,9 @@ class EPD(framebuf.FrameBuffer):
         cmd = self._command
         cmd(b"\x10", b"\x01")  # DEEP_SLEEP
         self._rst(0)  # According to schematic this turns off the power
+
+    def set_full(self):
+        self._full = True
+
+    def set_partial(self):
+        self._full = False
