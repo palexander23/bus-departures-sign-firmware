@@ -10,6 +10,7 @@ try:
     # Fonts
     import micropython_nano_gui.fonts.arial10 as arial10
     import micropython_nano_gui.fonts.freesans20 as freesans20
+    import micropython_nano_gui.fonts.arial35 as arial35
 
     HOSTED = False
 except:
@@ -48,47 +49,40 @@ def display_init():
 
     global ssd
     ssd = SSD(spi, pcs, pdc, prst, pbusy, landscape=True, asyn=False, full=True)
-    display_clear(ssd)
-    ssd.wait_until_ready()
 
     global wri
-    wri = Writer(ssd, freesans20, verbose=False)
+    wri = Writer(ssd, arial35, verbose=False)
     wri.set_clip(True, True, False)
 
     ssd.init_partial()
 
 
-counter = 0
+first_display = True
 
 
 def display_update(departure_list: list[DepartureTimeInfo]):
     if HOSTED:
         return
 
-    global counter
-    if counter == 0:
+    global first_display
+    if first_display == True:
         ssd.set_full()
+        first_display = False
+
     else:
         ssd.set_partial()
 
-    wri.set_textpos(ssd, 2, 2)
-    wri.printstring("Row 0")
-
-    wri.set_textpos(ssd, 27, 2)
-    wri.printstring("Row 1")
-
-    wri.set_textpos(ssd, 52, 2)
-    wri.printstring("Row 2")
-
-    wri.set_textpos(ssd, 77, 2)
-    wri.printstring("Row 3")
-
-    counter += 1
-
-    wri.set_textpos(ssd, 102, 2)
-    wri.printstring("Counter: {}".format(counter))
+    row_pos = 2
+    col_pos = 2
+    for departure in departure_list[:3]:
+        wri.set_textpos(ssd, col_pos, row_pos)
+        wri.printstring(
+            f"{departure.service:3}{departure.destination:8}{departure.time:>8}"
+        )
+        col_pos += 40
 
     ssd.show()
+    ssd.wait_until_ready()
 
 
 def display_clear(ssd):
