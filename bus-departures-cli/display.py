@@ -74,18 +74,18 @@ def display_update(departure_list: list[DepartureTimeInfo]):
     wri.set_textpos(ssd, 2, 2)
     wri.printstring("Row 0")
 
-    wri.set_textpos(ssd, 22, 2)
+    wri.set_textpos(ssd, 27, 2)
     wri.printstring("Row 1")
 
-    wri.set_textpos(ssd, 42, 2)
+    wri.set_textpos(ssd, 52, 2)
     wri.printstring("Row 2")
 
-    wri.set_textpos(ssd, 62, 2)
+    wri.set_textpos(ssd, 77, 2)
     wri.printstring("Row 3")
 
     counter += 1
 
-    wri.set_textpos(ssd, 82, 2)
+    wri.set_textpos(ssd, 102, 2)
     wri.printstring("Counter: {}".format(counter))
 
     ssd.show()
