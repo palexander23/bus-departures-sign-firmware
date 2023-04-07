@@ -19,13 +19,12 @@ SRC_UPLOAD_TOKENS = $(patsubst $(SRC_DIR)%.py, $(UPLOAD_TOKEN_DIR)%.py_uploaded,
 SRC_SUBDIRS_WITH_CACHE = $(wildcard $(SRC_DIR)*/)
 SRC_SUBDIRS = $(filter-out $(SRC_DIR)__%__/, $(SRC_SUBDIRS_WITH_CACHE))
 SRC_SUBDIRS_UPLOAD_TOKENS = $(patsubst $(SRC_DIR)%/, $(UPLOAD_TOKEN_DIR)%.py_uploaded, $(SRC_SUBDIRS))
-$(info $$SRC_SUBDIRS is [${SRC_SUBDIRS}])
-$(info $$SRC_SUBDIRS_UPLOAD_TOKENS is [${SRC_SUBDIRS_UPLOAD_TOKENS}])
 
 BOARD_FILES = $(subst _uploaded, , $(subst $(UPLOAD_TOKEN_DIR), , $(wildcard $(UPLOAD_TOKEN_DIR)*.py_uploaded)))
 
 blank :=
 define newline
+
 $(blank)
 endef
 
