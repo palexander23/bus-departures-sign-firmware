@@ -9,52 +9,55 @@
 # Has position, colors and border definition.
 # border: False no border None use bgcolor, int: treat as color
 
-from gui.core.colors import *  # Populate color LUT before use.
 from gui.core.writer import Writer
 import framebuf
 import gc
 
-def _circle(dev, x0, y0, r, color): # Single pixel circle
+
+def _circle(dev, x0, y0, r, color):  # Single pixel circle
     x = -r
     y = 0
-    err = 2 -2*r
+    err = 2 - 2 * r
     while x <= 0:
-        dev.pixel(x0 -x, y0 +y, color)
-        dev.pixel(x0 +x, y0 +y, color)
-        dev.pixel(x0 +x, y0 -y, color)
-        dev.pixel(x0 -x, y0 -y, color)
+        dev.pixel(x0 - x, y0 + y, color)
+        dev.pixel(x0 + x, y0 + y, color)
+        dev.pixel(x0 + x, y0 - y, color)
+        dev.pixel(x0 - x, y0 - y, color)
         e2 = err
-        if (e2 <= y):
+        if e2 <= y:
             y += 1
-            err += y*2 +1
-            if (-x == y and e2 <= x):
+            err += y * 2 + 1
+            if -x == y and e2 <= x:
                 e2 = 0
-        if (e2 > x):
+        if e2 > x:
             x += 1
-            err += x*2 +1
+            err += x * 2 + 1
 
-def circle(dev, x0, y0, r, color, width =1): # Draw circle
+
+def circle(dev, x0, y0, r, color, width=1):  # Draw circle
     x0, y0, r = int(x0), int(y0), int(r)
-    for r in range(r, r -width, -1):
+    for r in range(r, r - width, -1):
         _circle(dev, x0, y0, r, color)
 
-def fillcircle(dev, x0, y0, r, color): # Draw filled circle
+
+def fillcircle(dev, x0, y0, r, color):  # Draw filled circle
     x0, y0, r = int(x0), int(y0), int(r)
     x = -r
     y = 0
-    err = 2 -2*r
+    err = 2 - 2 * r
     while x <= 0:
-        dev.line(x0 -x, y0 -y, x0 -x, y0 +y, color)
-        dev.line(x0 +x, y0 -y, x0 +x, y0 +y, color)
+        dev.line(x0 - x, y0 - y, x0 - x, y0 + y, color)
+        dev.line(x0 + x, y0 - y, x0 + x, y0 + y, color)
         e2 = err
-        if (e2 <= y):
-            y +=1
-            err += y*2 +1
-            if (-x == y and e2 <= x):
+        if e2 <= y:
+            y += 1
+            err += y * 2 + 1
+            if -x == y and e2 <= x:
                 e2 = 0
-        if (e2 > x):
+        if e2 > x:
             x += 1
-            err += x*2 +1
+            err += x * 2 + 1
+
 
 # If a (framebuf based) device is passed to refresh, the screen is cleared.
 # None causes pending widgets to be drawn and the result to be copied to hardware.
@@ -62,7 +65,7 @@ def fillcircle(dev, x0, y0, r, color): # Draw filled circle
 # until it is complete: efficient for e.g. Dial which may have multiple Pointers
 def refresh(device, clear=False):
     if not isinstance(device, framebuf.FrameBuffer):
-        raise ValueError('Device must be derived from FrameBuffer.')
+        raise ValueError("Device must be derived from FrameBuffer.")
     if device not in DObject.devices:
         DObject.devices[device] = set()
         device.fill(0)
@@ -76,8 +79,9 @@ def refresh(device, clear=False):
             DObject.devices[device].clear()
     device.show()
 
+
 # Displayable object: effectively an ABC for all GUI objects.
-class DObject():
+class DObject:
     devices = {}  # Index device instance, value is a set of pending objects
 
     @classmethod
@@ -126,7 +130,11 @@ class DObject():
         self.has_border = False
 
     def warning(self):
-        print('Warning: attempt to create {} outside screen dimensions.'.format(self.__class__.__name__))
+        print(
+            "Warning: attempt to create {} outside screen dimensions.".format(
+                self.__class__.__name__
+            )
+        )
 
     # Blank working area
     # Draw a border if .bdcolor specifies a color. If False, erase an existing border
@@ -136,10 +144,22 @@ class DObject():
         dev.fill_rect(self.col, self.row, self.width, self.height, self.bgcolor)
         if isinstance(self.bdcolor, bool):  # No border
             if self.has_border:  # Border exists: erase it
-                dev.rect(self.col - 2, self.row - 2, self.width + 4, self.height + 4, self.bgcolor)
+                dev.rect(
+                    self.col - 2,
+                    self.row - 2,
+                    self.width + 4,
+                    self.height + 4,
+                    self.bgcolor,
+                )
                 self.has_border = False
         elif self.bdcolor:  # Border is required
-            dev.rect(self.col - 2, self.row - 2, self.width + 4, self.height + 4, self.bdcolor)
+            dev.rect(
+                self.col - 2,
+                self.row - 2,
+                self.width + 4,
+                self.height + 4,
+                self.bdcolor,
+            )
             self.has_border = True
 
     def value(self, v=None):
@@ -148,7 +168,7 @@ class DObject():
         return self._value
 
     def text(self, text=None, invert=False, fgcolor=None, bgcolor=None, bdcolor=None):
-        if hasattr(self, 'label'):
+        if hasattr(self, "label"):
             self.label.value(text, invert, fgcolor, bgcolor, bdcolor)
         else:
-            raise ValueError('Attempt to update nonexistent label.')
+            raise ValueError("Attempt to update nonexistent label.")

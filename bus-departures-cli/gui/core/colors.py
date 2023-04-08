@@ -3,21 +3,23 @@
 # Released under the MIT License (MIT). See LICENSE.
 # Copyright (c) 2020 Peter Hinch
 
-from color_setup import SSD
+from gui.color_setup import SSD
+
 
 # Code can be portable between 4-bit and other drivers by calling create_color
 def create_color(idx, r, g, b):
     c = SSD.rgb(r, g, b)
-    if not hasattr(SSD, 'lut'):
+    if not hasattr(SSD, "lut"):
         return c
     if not 0 <= idx <= 15:
-        raise ValueError('Color nos must be 0..15')
+        raise ValueError("Color nos must be 0..15")
     x = idx << 1
-    SSD.lut[x] = c & 0xff
+    SSD.lut[x] = c & 0xFF
     SSD.lut[x + 1] = c >> 8
     return idx
 
-if hasattr(SSD, 'lut'):  # Colors defined by LUT
+
+if hasattr(SSD, "lut"):  # Colors defined by LUT
     BLACK = create_color(0, 0, 0, 0)
     GREEN = create_color(1, 0, 255, 0)
     RED = create_color(2, 255, 0, 0)
