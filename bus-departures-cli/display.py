@@ -59,20 +59,20 @@ def display_init():
     ssd.init_partial()
 
 
-first_display = True
+prev_departures_list_len = 0
 
 
 def display_update(departure_list: list[DepartureTimeInfo]):
     if HOSTED:
         return
 
-    global first_display
-    if first_display == True:
+    global prev_departures_list_len
+    if prev_departures_list_len != len(departure_list):
         ssd.set_full()
-        first_display = False
-
     else:
         ssd.set_partial()
+
+    prev_departures_list_len = len(departure_list)
 
     display_width = 296
     service_col_pos = 2
