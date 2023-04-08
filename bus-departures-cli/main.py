@@ -4,8 +4,16 @@ from api import get_departures
 from departure_time_info import DepartureTimeInfo
 from wifi import init_wifi
 from config import STOP_ID
-from display import display_init, display_update
 from led import led_init, led_off, led_on, led_toggle
+
+# Automatically import the correct display interface
+# EPD when running micropython, terminal otherwise
+try:
+    import machine
+
+    from display_epd import display_init, display_update
+except:
+    from display_hosted import display_init, display_update
 
 # Terminal Control Codes
 LINE_UP = "\033[1A"
@@ -26,26 +34,13 @@ def main():
     while 1:
         # Get the departures info
         departures_list = get_departures(STOP_ID)
-        num_departures = len(departures_list)
 
-        # Print each departure to the dislpay
-        # for departure in departures_list:
-        #     print(
-        #         f"{departure.service:4}{departure.destination:20}{departure.time:>10}"
-        #     )
-
-        # Clear the rest of the screen that was not overwritten with this print
-        if prev_num_departures > num_departures:
-            for n in range(prev_num_departures - num_departures):
-                print(LINE_UP, end=LINE_CLEAR)
-
+        # Update the display
+        # EPD if running on embedded, terminal if running hosted
         display_update(departures_list)
 
+        # Delay so it's not constantly updating
         time.sleep(10)
-
-        # Bring the cursor back to the top of the departures list
-        for n in range(num_departures):
-            print(LINE_UP, end="")
 
 
 if __name__ == "__main__":
