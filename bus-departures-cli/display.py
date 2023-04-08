@@ -78,9 +78,11 @@ def display_update(departure_list: list[DepartureTimeInfo]):
     col_pos = 2
     for departure in departure_list[:3]:
         wri.set_textpos(ssd, col_pos, row_pos)
-        wri.printstring(
-            f"{departure.service:3}{departure.destination:8}{departure.time:>8}"
+        printstr = (
+            f"{departure.service:3}{departure.destination[:7]:7}{departure.time: >8}"
         )
+        wri.printstring(printstr)
+        print(printstr)
         col_pos += 40
 
     ssd.show()
