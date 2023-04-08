@@ -74,16 +74,20 @@ def display_update(departure_list: list[DepartureTimeInfo]):
     else:
         ssd.set_partial()
 
+    display_width = 296
+    service_col_pos = 2
+    dest_col_pos = int(display_width * 0.15)
+    time_col_pos = int(display_width * 0.55)
+
     row_pos = 2
-    col_pos = 2
     for departure in departure_list[:3]:
-        wri.set_textpos(ssd, col_pos, row_pos)
-        printstr = (
-            f"{departure.service:3}{departure.destination[:7]:7}{departure.time: >8}"
-        )
-        wri.printstring(printstr)
-        print(printstr)
-        col_pos += 40
+        wri.set_textpos(ssd, row_pos, service_col_pos)
+        wri.printstring(f"{departure.service:3}")
+        wri.set_textpos(ssd, row_pos, dest_col_pos)
+        wri.printstring(f"{departure.destination[:7]}")
+        wri.set_textpos(ssd, row_pos, time_col_pos)
+        wri.printstring(f"{departure.time:<8}")
+        row_pos += 40
 
     ssd.show()
     ssd.wait_until_ready()
