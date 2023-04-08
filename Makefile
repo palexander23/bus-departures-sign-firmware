@@ -11,10 +11,14 @@ AMPY_ARGS = -p $(PORT)
 # This means files are only reuploaded when the token is older than the src.
 
 SRC_DIR = ./bus-departures-cli/
-UPLOAD_TOKEN_DIR = ./bus-departures-cli/__mpycache__/
+UPLOAD_TOKEN_DIR = ${SRC_DIR}__mpycache__/
 
 SRC_FILES = $(wildcard $(SRC_DIR)*.py)
 SRC_UPLOAD_TOKENS = $(patsubst $(SRC_DIR)%.py, $(UPLOAD_TOKEN_DIR)%.py_uploaded, $(SRC_FILES))
+
+SRC_SUBDIRS_WITH_CACHE = $(wildcard $(SRC_DIR)*/)
+SRC_SUBDIRS = $(filter-out $(SRC_DIR)__%__/, $(SRC_SUBDIRS_WITH_CACHE))
+SRC_SUBDIRS_UPLOAD_TOKENS = $(patsubst $(SRC_DIR)%/, $(UPLOAD_TOKEN_DIR)%.py_uploaded, $(SRC_SUBDIRS))
 
 BOARD_FILES = $(subst _uploaded, , $(subst $(UPLOAD_TOKEN_DIR), , $(wildcard $(UPLOAD_TOKEN_DIR)*.py_uploaded)))
 
@@ -24,7 +28,7 @@ define newline
 $(blank)
 endef
 
-upload-and-display: $(SRC_UPLOAD_TOKENS)
+upload-and-display: $(SRC_UPLOAD_TOKENS) $(SRC_SUBDIRS_UPLOAD_TOKENS)
 	make open-prompt
 
 open-prompt:
@@ -33,8 +37,13 @@ open-prompt:
 	@picocom $(PORT) -b115200 -q
 
 
-# Upload the file and create the upload token
+# Upload files file and create the upload token
 $(UPLOAD_TOKEN_DIR)%.py_uploaded: $(SRC_DIR)%.py $(UPLOAD_TOKEN_DIR)
+	$(AMPY) $(AMPY_ARGS) put $<
+	@echo Created > $@
+
+# Upload files file and create the upload token
+$(UPLOAD_TOKEN_DIR)%.py_uploaded: $(SRC_DIR)% $(UPLOAD_TOKEN_DIR)
 	$(AMPY) $(AMPY_ARGS) put $<
 	@echo Created > $@
 
@@ -46,8 +55,7 @@ clean:
 	-make clear-tokens
 
 clear-tokens:
-	-cd $(UPLOAD_TOKEN_DIR)
-	-del /S /Q *.py_uploaded
+	-rm ${UPLOAD_TOKEN_DIR}*.py_uploaded 
 
 
 reset:
