@@ -25,6 +25,8 @@ def init():
     init_wifi()
     display_init()
 
+    print("Bus Departures v1.0.0")
+
 
 def main():
     init()
