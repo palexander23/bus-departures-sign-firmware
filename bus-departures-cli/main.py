@@ -4,8 +4,8 @@ from api import get_departures
 from departure_time_info import DepartureTimeInfo
 from wifi import init_wifi
 from config import STOP_ID
-
 from display import display_init, display_update
+from led import led_init, led_off, led_on, led_toggle
 
 # Terminal Control Codes
 LINE_UP = "\033[1A"
@@ -13,6 +13,7 @@ LINE_CLEAR = "\x1b[2K"
 
 
 def init():
+    led_init()
     init_wifi()
     display_init()
 
