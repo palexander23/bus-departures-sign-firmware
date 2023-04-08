@@ -29,14 +29,14 @@ def led_init():
     led_off()
     time.sleep_ms(200)
 
-    global flash_timer
+    led_start_flash_pattern(flash_len_ms=50, flash_gap_ms=2000)
 
 
 def led_start_flash_pattern(flash_len_ms, flash_gap_ms):
     global flash_timer
     flash_timer = Timer(
-        period=flash_len_ms * 1000,
-        mode=Timer.ONE_SHOT,
+        period=flash_gap_ms,
+        mode=Timer.PERIODIC,
         callback=lambda t: led_flash(flash_len_ms),
     )
 
@@ -47,7 +47,7 @@ def led_flash(flash_len_ms):
 
     global led
     led_on()
-    time.sleep_ms(50)
+    time.sleep_ms(flash_len_ms)
     led_off()
 
 
