@@ -15,7 +15,6 @@ def led_init():
     if HOSTED:
         return
 
-    print("LED INIT")
     global led
     led = Pin("LED", Pin.OUT)
 

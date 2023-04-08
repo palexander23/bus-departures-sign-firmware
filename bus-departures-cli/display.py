@@ -59,29 +59,35 @@ def display_init():
     ssd.init_partial()
 
 
-first_display = True
+prev_departures_list_len = 0
 
 
 def display_update(departure_list: list[DepartureTimeInfo]):
     if HOSTED:
         return
 
-    global first_display
-    if first_display == True:
+    global prev_departures_list_len
+    if prev_departures_list_len != len(departure_list):
         ssd.set_full()
-        first_display = False
-
     else:
         ssd.set_partial()
 
+    prev_departures_list_len = len(departure_list)
+
+    display_width = 296
+    service_col_pos = 2
+    dest_col_pos = int(display_width * 0.15)
+    time_col_pos = int(display_width * 0.55)
+
     row_pos = 2
-    col_pos = 2
     for departure in departure_list[:3]:
-        wri.set_textpos(ssd, col_pos, row_pos)
-        wri.printstring(
-            f"{departure.service:3}{departure.destination:8}{departure.time:>8}"
-        )
-        col_pos += 40
+        wri.set_textpos(ssd, row_pos, service_col_pos)
+        wri.printstring(f"{departure.service:3}")
+        wri.set_textpos(ssd, row_pos, dest_col_pos)
+        wri.printstring(f"{departure.destination[:7]}")
+        wri.set_textpos(ssd, row_pos, time_col_pos)
+        wri.printstring(f"{departure.time:<8}")
+        row_pos += 40
 
     ssd.show()
     ssd.wait_until_ready()

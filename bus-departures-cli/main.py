@@ -29,10 +29,10 @@ def main():
         num_departures = len(departures_list)
 
         # Print each departure to the dislpay
-        for departure in departures_list:
-            print(
-                f"{departure.service:4}{departure.destination:20}{departure.time:>10}"
-            )
+        # for departure in departures_list:
+        #     print(
+        #         f"{departure.service:4}{departure.destination:20}{departure.time:>10}"
+        #     )
 
         # Clear the rest of the screen that was not overwritten with this print
         if prev_num_departures > num_departures:
