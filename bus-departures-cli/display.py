@@ -1,20 +1,22 @@
-try:
-    import machine
-    import gc
+# try:
+import machine
+import gc
 
-    from micropython_nano_gui.drivers.ePaper2in9 import EPD as SSD
-    from micropython_nano_gui.core.nanogui import refresh
-    from micropython_nano_gui.core.writer import Writer
-    from micropython_nano_gui.widgets.label import Label
+from gui.drivers.ePaper2in9 import EPD as SSD
+from gui.core.nanogui import refresh
+from gui.core.writer import Writer
+from gui.widgets.label import Label
 
-    # Fonts
-    import micropython_nano_gui.fonts.arial10 as arial10
-    import micropython_nano_gui.fonts.freesans20 as freesans20
-    import micropython_nano_gui.fonts.arial35 as arial35
+# Fonts
+import gui.fonts.arial10 as arial10
+import gui.fonts.freesans20 as freesans20
+import gui.fonts.arial35 as arial35
 
-    HOSTED = False
-except:
-    HOSTED = True
+HOSTED = False
+# except Exception as e:
+#     HOSTED = True
+#     print(e)
+#     print("Display disabled in hosted mode...")
 
 from time import sleep
 
