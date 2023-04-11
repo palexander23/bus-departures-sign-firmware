@@ -1,4 +1,5 @@
 import time
+import os
 
 from api import get_departures
 from departure_time_info import DepartureTimeInfo
@@ -16,6 +17,12 @@ try:
 except:
     from display_hosted import display_init, display_update
 
+# Enable colour
+if os.name == "nt":
+    import colorama
+
+    colorama.init()
+
 # Terminal Control Codes
 LINE_UP = "\033[1A"
 LINE_CLEAR = "\x1b[2K"
@@ -30,7 +37,7 @@ def init():
     display_init()
     wdt_init(8000)
 
-    print("Bus Departures v1.1.0")
+    print("Bus Departures v1.1.1")
 
 
 def main():
