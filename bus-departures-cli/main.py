@@ -37,7 +37,7 @@ def init():
     display_init()
     wdt_init(8000)
 
-    print("Bus Departures UNCONTROLLED")
+    print("Bus Departures v1.1.1")
 
 
 def main():
