@@ -30,7 +30,7 @@ def init():
     display_init()
     wdt_init(8000)
 
-    print("Bus Departures v1.0.0")
+    print("Bus Departures v1.1.0")
 
 
 def main():
