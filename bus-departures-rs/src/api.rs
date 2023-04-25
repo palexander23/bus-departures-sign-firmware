@@ -17,9 +17,9 @@ lazy_static! {
 
 #[derive(Debug)]
 pub struct DepartureTimeInfo {
-    time: String,
-    service: String,
-    destination: String,
+    pub time: String,
+    pub service: String,
+    pub destination: String,
 }
 
 fn get_departure_html(stop_id: &str) -> Result<String, Box<dyn std::error::Error>> {
