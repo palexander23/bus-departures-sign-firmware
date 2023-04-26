@@ -3,11 +3,14 @@ mod api;
 use core::time;
 use std::thread;
 
+use enable_ansi_support;
 use tabled::{builder::Builder, settings::Style};
 
 use api::{get_departures, BUSWAY_SHIRE_HALL_N};
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    enable_ansi_support::enable_ansi_support().unwrap();
+
     let mut prev_table_line_num = 0;
 
     loop {
